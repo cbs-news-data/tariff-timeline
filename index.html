@@ -7,9 +7,6 @@
     <title>Vertical Timeline</title>
     <link rel="stylesheet" href="https://use.typekit.net/rdn8fde.css" />
     <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
-    <script>
-        const pymChild = new pym.Child();
-    </script>
 </head>
 
 <body>
@@ -121,38 +118,38 @@
         { date: "2025-07-09T12:00:00", text: "New extended deadline after 50% EU tariffs originally set for June 1, end of the 90-day pause for Liberation Day tariffs" }
     ];
 
-    function formatDate(dateStr) {
-        const date = new Date(dateStr);
-        const options = { month: "long", day: "numeric" };
-        return date.toLocaleDateString(undefined, options);
-    }
+ function formatDate(dateStr) {
+      const date = new Date(dateStr);
+      const options = { month: "long", day: "numeric" };
+      return date.toLocaleDateString(undefined, options);
+  }
 
-    function daysBetween(d1, d2) {
-        const ONE_DAY = 1000 * 60 * 60 * 24;
-        return Math.round((d2 - d1) / ONE_DAY);
-    }
+  function daysBetween(d1, d2) {
+      const ONE_DAY = 1000 * 60 * 60 * 24;
+      return Math.round((d2 - d1) / ONE_DAY);
+  }
 
-    const timeline = document.getElementById("timeline");
+  const timeline = document.getElementById("timeline");
 
-    let prevDate = new Date(timelineData[0].date);
+  let prevDate = new Date(timelineData[0].date);
 
-    timelineData.forEach((event, index) => {
-        const currentDate = new Date(event.date);
-        const dayGap = index === 0 ? 0 : daysBetween(prevDate, currentDate);
-        const spacing = 10 + dayGap * 6;
+  timelineData.forEach((event, index) => {
+      const currentDate = new Date(event.date);
+      const dayGap = index === 0 ? 0 : daysBetween(prevDate, currentDate);
+      const spacing = 10 + dayGap * 6;
 
-        const item = document.createElement("div");
-        item.className = "timeline-item";
-        item.style.setProperty('--spacer', index === 0 ? '0px' : `${spacing}px`);
-        item.innerHTML = `
-    <div class="timeline-date">${formatDate(event.date)}</div>
-    <div class="timeline-text">${event.text}</div>
-  `;
-        timeline.appendChild(item);
-        prevDate = currentDate;
-    });
+      const item = document.createElement("div");
+      item.className = "timeline-item";
+      item.style.setProperty('--spacer', index === 0 ? '0px' : `${spacing}px`);
+      item.innerHTML = `
+        <div class="timeline-date">${formatDate(event.date)}</div>
+        <div class="timeline-text">${event.text}</div>
+      `;
+      timeline.appendChild(item);
+      prevDate = currentDate;
+  });
 
-    if (window.pymChild) {
-        pymChild.sendHeight();
-    }
+  // Init pym AFTER render
+  const pymChild = new pym.Child();
+  pymChild.sendHeight();
 </script>
