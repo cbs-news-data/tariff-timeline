@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vertical Timeline</title>
+    <link rel="stylesheet" href="https://use.typekit.net/rdn8fde.css" />
+    <script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+    <script>
+        const pymChild = new pym.Child();
+    </script>
+</head>
+
+<body>
+            <div class="title">Title goes here</div>
+
+    <div class="timeline-container">
+        <div id="timeline" class="timeline"></div>
+    </div>
+    <div class="source"> Graphic: Taylor Johnston / CBS News • Source: Eurasia Group</a>
+
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
+
+<style>
+    @font-face {
+        font-family: "Publico Headline";
+        src: url("fonts/PublicoHeadline-Black.woff2") format("woff2"),
+            url("fonts/PublicoHeadline-Black.woff") format("woff");
+    }
+
+    body {
+        margin: 0;
+        /* padding: 2rem; */
+        font-family: "proxima-nova", sans-serif;
+
+    }
+
+    .source {
+        color: #828282;
+        font-size: 14px;
+    }
+
+
+    .timeline-container {
+        max-width: 600px;
+        /* margin: 0 auto; */
+        margin-bottom: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
+        .title {
+        font-family: "Publico Headline", serif;
+        line-height: 34px;
+        font-size: 26px;
+        color: rgb(0, 0, 0);
+        margin-bottom: 1rem;
+    }
+
+
+    .timeline {
+        position: relative;
+        margin-left: 20px;
+        padding-left: 20px;
+        border-left: 3px solid #333;
+    }
+
+    .timeline-item {
+        margin-top: var(--spacer, 20px);
+        /* use day-based spacing */
+        position: relative;
+        padding-left: 1rem;
+    }
+
+    .timeline-item::before {
+        content: "";
+        position: absolute;
+        left: -12px;
+        top: 0.3rem;
+        width: 10px;
+        height: 10px;
+        background-color: #333;
+        border-radius: 50%;
+    }
+
+    .timeline-date {
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 0.3rem;
+        font-size: 18px;
+    }
+
+    .timeline-text {
+        color: #555;
+        line-height: 1.4;
+    }
+</style>
+
+<script src="https://pym.nprapps.org/pym.v1.min.js"></script>
+<script>
+    const timelineData = [
+        { date: "2025-04-02T12:00:00", text: "Reciprocal tariffs announced" },
+        { date: "2025-04-08T12:00:00", text: "Increase in China reciprocal tariffs to 84% from original 34%" },
+        { date: "2025-04-09T12:00:00", text: "90-day reciprocal tariff pause; resets to 10% globally; China tariffs raised to 125%" },
+        { date: "2025-04-10T12:00:00", text: "Increase in China reciprocal tariffs from 125% to 145%" },
+        { date: "2025-04-11T12:00:00", text: "Temporary electronics exemption (smartphones, chips); chips still targeted" },
+        { date: "2025-04-14T12:00:00", text: "U.S. announces Section 232 investigations into semiconductors/pharmaceuticals" },
+        { date: "2025-04-29T12:00:00", text: "Adjusts auto tariffs to avoid stacking with metals tariffs" },
+        { date: "2025-05-08T12:00:00", text: "U.S. announces UK trade framework; 10% base remains, sector-specific cuts" },
+        { date: "2025-05-12T12:00:00", text: "US-China tariff truce" },
+        { date: "2025-05-23T12:00:00", text: "US threatens 50% EU tariffs as negotiations stall; threatens 25% tariffs on Apple to push reshoring" },
+        { date: "2025-05-28T12:00:00", text: "Federal court overturns IEEPA tariffs, Trump administration appeals and is granted a stay by Court of Appeals for the Federal Circuit" },
+        { date: "2025-07-09T12:00:00", text: "New extended deadline after 50% EU tariffs originally set for June 1, end of the 90-day pause for Liberation Day tariffs" }
+    ];
+
+    function formatDate(dateStr) {
+        const date = new Date(dateStr);
+        const options = { month: "long", day: "numeric" };
+        return date.toLocaleDateString(undefined, options);
+    }
+
+    function daysBetween(d1, d2) {
+        const ONE_DAY = 1000 * 60 * 60 * 24;
+        return Math.round((d2 - d1) / ONE_DAY);
+    }
+
+    const timeline = document.getElementById("timeline");
+
+    let prevDate = new Date(timelineData[0].date);
+
+    timelineData.forEach((event, index) => {
+        const currentDate = new Date(event.date);
+        const dayGap = index === 0 ? 0 : daysBetween(prevDate, currentDate);
+        const spacing = 10 + dayGap * 6;
+
+        const item = document.createElement("div");
+        item.className = "timeline-item";
+        item.style.setProperty('--spacer', index === 0 ? '0px' : `${spacing}px`);
+        item.innerHTML = `
+    <div class="timeline-date">${formatDate(event.date)}</div>
+    <div class="timeline-text">${event.text}</div>
+  `;
+        timeline.appendChild(item);
+        prevDate = currentDate;
+    });
+
+    if (window.pymChild) {
+        pymChild.sendHeight();
+    }
+</script>
